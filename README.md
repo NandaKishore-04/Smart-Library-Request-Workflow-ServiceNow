@@ -1,258 +1,451 @@
-# 📚 Smart Library Request Workflow in ServiceNow
+# 📚 Smart Library Request Workflow
 
-## 📌 Project Overview
+<p align="center">
+  <img src="Documentation/Architecture.png" alt="Architecture" width="900"/>
+</p>
 
-The **Smart Library Request Workflow in ServiceNow** is a custom ServiceNow application developed to automate and simplify library book management. The application enables students to request books online while allowing librarians to manage the book catalog, approve or reject requests, and automatically update book availability through workflow automation.
-
-The project demonstrates ServiceNow platform capabilities including custom tables, role-based access control (ACLs), Flow Designer, UI Policies, Reports, and workflow automation.
-
----
-
-## 🎯 Business Objectives
-
-- Reduce manual library management processes.
-- Improve accuracy in tracking library books.
-- Automate borrow request approvals.
-- Maintain real-time book availability.
-- Provide role-based access for students and librarians.
-- Generate reports for library usage analysis.
+<p align="center">
+  <b>A complete ServiceNow application for automating the Library Book Borrowing Process using Flow Designer, ACLs, UI Policies, Roles, Email Notifications, Reports, and Reference Qualifiers.</b>
+</p>
 
 ---
 
-## ✨ Features
+# 📖 Project Overview
 
-### Student
-- View available books.
-- Submit borrow requests.
-- Track request status.
-- View own borrowing history.
+The **Smart Library Request Workflow** is a ServiceNow application designed to automate the library borrowing process.
 
-### Librarian
-- Add new books.
-- Update book information.
-- Approve or reject borrow requests.
-- Manage book availability.
-- View reports and analytics.
+The application enables students to submit book borrowing requests while allowing librarians to review, approve, or reject requests through an automated approval workflow.
 
-### Automation
-- Automatic approval workflow.
-- Automatic book status update.
-- Automatic availability update after return.
-- UI Policies for read-only fields.
-- Access Control using ACLs.
+The workflow automatically:
+
+- Creates Borrow Requests
+- Requests Librarian Approval
+- Updates Book Availability
+- Updates Borrow Request Status
+- Sends Email Notifications
+- Generates Reports
 
 ---
 
-# 🏗️ Project Architecture
+# ✨ Features
 
-```
-Student
-     │
-     ▼
-Borrow Request
-     │
-     ▼
-Flow Designer
-     │
- ┌────┴────┐
- │         │
-Approved  Rejected
- │
- ▼
-Book Status = Issued
- │
- ▼
-Returned
- │
- ▼
-Book Status = Available
-```
+- 📚 Book Management
+- 👨‍🎓 Student Borrow Requests
+- 👩‍🏫 Librarian Approval Workflow
+- 🔐 Role Based Access Control (ACL)
+- 📧 Automatic Email Notifications
+- ⚙️ Flow Designer Automation
+- 📊 Reports & Analytics
+- ✅ UI Policies
+- 🔍 Reference Qualifier
+- 📈 Borrow History Tracking
 
 ---
 
-# 🛠️ Technologies Used
+# 🛠 Technologies Used
 
 | Technology | Purpose |
-|------------|---------|
-| ServiceNow | Application Development |
+|------------|----------|
+| ServiceNow Studio | Application Development |
 | Flow Designer | Workflow Automation |
-| Access Control (ACL) | Security |
-| UI Policies | Form Behavior |
+| Access Control Lists | Security |
+| Roles | Authorization |
+| UI Policies | Form Validation |
+| Reference Qualifier | Filter Available Books |
 | Reports | Analytics |
-| Custom Tables | Data Management |
-
----
-
-# 📂 Custom Tables
-
-## Book (`u_book`)
-
-| Field | Type |
-|--------|------|
-| Book ID | String |
-| Title | String |
-| Author | String |
-| Category | Choice |
-| Availability Status | Choice |
-| Total Copies | Integer |
-
----
-
-## Borrow Request (`u_borrow_request`)
-
-| Field | Type |
-|--------|------|
-| Requested Book | Reference |
-| Requested By | Reference |
-| Request Date | Date |
-| Return Date | Date |
-| Status | Choice |
+| Email Notifications | User Notification |
 
 ---
 
 # 👥 User Roles
 
-## Student
-- Read available books
-- Create borrow requests
-- View own requests
+## 👨‍🎓 Student
 
-## Librarian
-- Create books
-- Update books
-- Delete books
-- Approve requests
-- Reject requests
-- Generate reports
+- Search Books
+- Submit Borrow Requests
+- Track Request Status
+
+---
+
+## 📚 Librarian
+
+- Manage Books
+- Approve Requests
+- Reject Requests
+- View Reports
+
+---
+
+## 👨‍💼 Administrator
+
+- Configure Application
+- Manage Users
+- Manage Security
+- Monitor Flow
+
+---
+
+# 🗂 Database Tables
+
+## 📚 Book Table
+
+Fields
+
+- Book ID
+- Title
+- Author
+- Category
+- ISBN
+- Availability Status
+- Total Copies
+
+---
+
+## 📄 Borrow Request Table
+
+Fields
+
+- Requested By
+- Book
+- Request Date
+- Status
+
+Status Values
+
+- Requested
+- Approved
+- Rejected
+- Returned
+
+---
+
+# 🏗 System Architecture
+
+<p align="center">
+<img src="Documentation/Architecture.png" width="100%">
+</p>
 
 ---
 
 # 🔄 Workflow
 
-1. Student logs into ServiceNow.
-2. Student views available books.
-3. Student submits a borrow request.
-4. Flow Designer triggers automatically.
-5. Librarian reviews the request.
-6. If approved:
-   - Request status becomes **Approved**
-   - Book status changes to **Issued**
-7. If rejected:
-   - Request status becomes **Rejected**
-8. When the book is returned:
-   - Request status becomes **Returned**
-   - Book status changes back to **Available**
+```text
+Student
+      │
+      ▼
+Borrow Request Created
+      │
+      ▼
+Ask for Approval
+      │
+      ▼
+Librarian Approval
+      │
+      ▼
+Update Book Status
+      │
+      ▼
+Update Borrow Request Status
+      │
+      ▼
+Send Email Notification
+```
 
 ---
 
-# 🔐 Security
+# 🔐 Access Control Lists (ACL)
 
-Access Control Lists (ACLs) are configured as follows:
+The project implements record-level ACLs for:
 
-## Book Table
+- Create
+- Read
+- Write
+- Delete
 
-| Operation | Student | Librarian |
-|-----------|----------|------------|
-| Read | ✅ | ✅ |
-| Create | ❌ | ✅ |
-| Update | ❌ | ✅ |
-| Delete | ❌ | ✅ |
+Implemented for
 
-## Borrow Request Table
+- Book Table
+- Borrow Request Table
 
-| Operation | Student | Librarian |
-|-----------|----------|------------|
-| Create | ✅ | ✅ |
-| Read | Own Records | All |
-| Update | ❌ | ✅ |
-| Delete | ❌ | ✅ |
+Role Based Security ensures:
+
+- Students access only borrowing functions.
+- Librarians manage books and requests.
+- Administrators configure the application.
+
+---
+
+# ⚙️ Flow Designer
+
+The Flow Designer automates the entire borrowing process.
+
+Flow Steps
+
+1. Trigger Borrow Request
+2. Ask For Approval
+3. Librarian Approval
+4. Update Book Record
+5. Update Borrow Request
+6. Send Email Notification
 
 ---
 
 # 📊 Reports
 
-The application includes:
+Two ServiceNow reports were developed.
 
-- Most Borrowed Books
-- Active Borrow Requests
-- Borrow Request Status Summary
+### 📈 Most Borrowed Books (Bar Chart)
 
----
+Displays the number of borrow requests for each book.
 
-# 🧪 Testing
+### 🥧 Most Borrowed Books (Pie Chart)
 
-The application was tested using ServiceNow Impersonation.
-
-### Student Testing
-
-- View books
-- Submit request
-- Track request
-
-### Librarian Testing
-
-- Add books
-- Approve request
-- Reject request
-- Update status
+Visual representation of book borrowing distribution.
 
 ---
 
-# 📷 Project Screenshots
+# 📸 Project Screenshots
 
-```
-Screenshots/
-│
-├── Login.png
-├── Application.png
-├── Roles.png
-├── Users.png
-├── Book_Table.png
-├── Borrow_Request_Table.png
-├── Flow_Designer.png
-├── ACLs.png
-├── Reports.png
-├── Testing.png
-```
+## Roles
+
+![](Screenshots/01_Roles_Created.png)
 
 ---
 
-# 📁 Repository Structure
+## Student User
+
+![](Screenshots/Student_User.png)
+
+---
+
+## Librarian User
+
+![](Screenshots/Librarian_User.png)
+
+---
+
+## Book Table
+
+![](Screenshots/Book_Table.png)
+
+---
+
+## Borrow Request Table
+
+![](Screenshots/Borrow_Request_Table.png)
+
+---
+
+## Book Records
+
+![](Screenshots/Book_Records.png)
+
+---
+
+## Borrow Request Form
+
+![](Screenshots/Borrow%20Request%20Form.png)
+
+---
+
+## Borrow Requests
+
+![](Screenshots/Borrow%20Requests.png)
+
+---
+
+## Trigger
+
+![](Screenshots/Trigger.png)
+
+---
+
+## Approval Action
+
+![](Screenshots/Approval_Action.png)
+
+---
+
+## Update Book
+
+![](Screenshots/Update_Book.png)
+
+---
+
+## Update Request
+
+![](Screenshots/Update_Request.png)
+
+---
+
+## Activated Flow
+
+![](Screenshots/Activated_Flow.png)
+
+---
+
+## Flow Execution
+
+![](Screenshots/Flow%20Execution.png)
+
+---
+
+## Book Table ACL
+
+![](Screenshots/Book%20Table%20ACL.png)
+
+---
+
+## Borrow Request ACL
+
+![](Screenshots/Borrow%20Request%20ACL.png)
+
+---
+
+## UI Policy
+
+![](Screenshots/UI%20Policy.png)
+
+---
+
+## Reference Qualifier
+
+![](Screenshots/Reference_Qualifier.png)
+
+---
+
+## Book Status
+
+![](Screenshots/Books%20Status.png)
+
+---
+
+## Email Notification
+
+![](Screenshots/Email%20Notification.png)
+
+---
+
+## Send Email
+
+![](Screenshots/Send_E-mail.png)
+
+---
+
+## Librarian User Approvals
+
+![](Screenshots/Librarian%20User%20Approvals.png)
+
+---
+
+## Most Borrowed Books - Bar Chart
+
+![](Screenshots/Most%20Borrowed%20Books%20Bar%20Chart%20Report.png)
+
+---
+
+## Most Borrowed Books - Pie Chart
+
+![](Screenshots/Most%20Borrowed%20Books%20Pie%20Chart%20Report.png)
+
+---
+
+# 📂 Repository Structure
 
 ```
 Smart-Library-Request-Workflow-ServiceNow
 │
-├── README.md
-├── Project_Report.pdf
-├── Update_Set.xml
-├── Screenshots/
-└── Demo_Video_Link.txt
+├── Documentation
+│   ├── Final Project Report
+│   └── Architecture.png
+│
+├── Reports
+│   ├── Most Borrowed Books Bar Chart Report.pdf
+│   └── Most Borrowed Books Pie Chart Report.pdf
+│
+├── Screenshots
+│   ├── 01_Roles_Created.png
+│   ├── Activated_Flow.png
+│   ├── Approval_Action.png
+│   ├── Book Table ACL.png
+│   ├── Book_Records.png
+│   ├── Book_Table.png
+│   ├── Books Status.png
+│   ├── Borrow Request ACL.png
+│   ├── Borrow Request Form.png
+│   ├── Borrow Requests.png
+│   ├── Borrow_Request_Table.png
+│   ├── Email Notification.png
+│   ├── Flow Execution.png
+│   ├── Librarian User Approvals.png
+│   ├── Librarian_User.png
+│   ├── Most Borrowed Books Bar Chart Report.png
+│   ├── Most Borrowed Books Pie Chart Report.png
+│   ├── Reference_Qualifier.png
+│   ├── Send_E-mail.png
+│   ├── Student_User.png
+│   ├── Trigger.png
+│   ├── UI Policy.png
+│   ├── Update_Book.png
+│   └── Update_Request.png
+│
+├── Demo_Link.txt
+└── README.md
 ```
+
+---
+
+# 🎥 Project Demonstration
+
+Google Drive Folder
+
+https://drive.google.com/drive/folders/1DKtuXi0ce_UnRyG2awF13NEzkjMuGnyF?usp=sharing
+
+Videos Included
+
+- Smart Library Request Workflow Demo
+- Borrow Request Creation
+- Borrow Request Approval Workflow
 
 ---
 
 # 🚀 Future Enhancements
 
-- Email notifications
-- Barcode integration
-- QR code-based borrowing
-- Fine calculation
-- Due date reminders
-- Dashboard for management
-- Mobile support
+- Book Return Workflow
+- Fine Calculation
+- Due Date Reminder
+- Book Reservation
+- Dashboard Analytics
+- Barcode Integration
+- RFID Support
+
+---
+
+# 📚 Learning Outcomes
+
+Through this project, the following ServiceNow concepts were implemented:
+
+- ServiceNow Studio
+- Flow Designer
+- ACL
+- Roles
+- UI Policies
+- Reports
+- Reference Qualifier
+- Email Notifications
+- ServiceNow Application Development
 
 ---
 
 # 👨‍💻 Developer
 
-**Nanda Kishore Reddy Konduru**
+**Konduru Nanda Kishore Reddy**
 
-GitHub: https://github.com/NandaKishore-04
+Final Year B.Tech Student
 
-LinkedIn: https://www.linkedin.com/in/nanda-kishore-reddy-515081294
 
 ---
 
-# 📜 License
+# ⭐ Support
 
-This project was developed for learning and internship purposes using the ServiceNow Developer Platform.
+If you found this project useful, consider giving this repository a ⭐.
