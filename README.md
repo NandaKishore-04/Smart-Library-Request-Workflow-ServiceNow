@@ -399,7 +399,7 @@ Smart-Library-Request-Workflow-ServiceNow
 
 Google Drive Folder
 
-https://drive.google.com/drive/folders/1DKtuXi0ce_UnRyG2awF13NEzkjMuGnyF?usp=sharing
+https://drive.google.com/drive/folders/1DKtuXi0ce_UnRyG2awF13NEzkjMuGnyF?usp=drive_link
 
 Videos Included
 
