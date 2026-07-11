@@ -409,6 +409,33 @@ Videos Included
 
 ---
 
+## 📄 Project Report
+
+The complete project documentation is available in the report below.
+
+📘 **Project Report**
+
+`Documentation/Final Project Report.pdf`
+
+The report includes:
+
+- Project Overview
+- Problem Statement
+- Objectives
+- Technologies Used
+- System Architecture
+- Database Design
+- Workflow Automation
+- Security (ACLs)
+- UI Policies
+- Reference Qualifiers
+- Reports & Analytics
+- Testing
+- Screenshots
+- Results and Conclusion
+
+---
+
 # 🚀 Future Enhancements
 
 - Book Return Workflow
